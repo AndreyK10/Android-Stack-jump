@@ -70,4 +70,23 @@ public class PlatformMovement : MonoBehaviour
         }
         t = finalValue;
     }
+    private void OnCollisionEnter(Collision collision)
+    {
+        if (collision.gameObject.TryGetComponent(out Player player))
+        {
+            if (collision.contacts.Length > 0)
+            {
+                ContactPoint contact = collision.contacts[0];
+
+                if (Vector3.Dot(contact.normal, Vector3.up) > 0.5f)
+                {
+                    ScoreManager.instance.IncreaseScore();
+                }
+            }
+
+            rb.isKinematic = true;
+            this.enabled = false;
+
+        }
+    }
 }

@@ -9,9 +9,9 @@ public class PlayerMovement : MonoBehaviour
     private Rigidbody rb;
     private BoxCollider boxCollider;
 
-    public float gravityScale = 5;
+    [SerializeField] private float gravityScale = 5;
     [SerializeField] private bool isGrounded;
-    public float hitForce;
+    [SerializeField] private float hitForce;
 
 
     private void Awake()
@@ -22,16 +22,16 @@ public class PlayerMovement : MonoBehaviour
 
 
     void Update()
-    {
+    {        
 
         if (Input.GetKeyDown(KeyCode.Space))
         {
             Jump();
         }
-        //if (Input.GetKeyDown(KeyCode.U))
-        //{
-        //    rigidbody.constraints &= ~RigidbodyConstraints.FreezePositionX & ~RigidbodyConstraints.FreezeRotationZ;            
-        //}
+        if (Input.GetKeyDown(KeyCode.U))
+        {
+            UnityEngine.SceneManagement.SceneManager.LoadScene(UnityEngine.SceneManagement.SceneManager.GetActiveScene().buildIndex);
+        }
         if (rb.velocity.y == 0f)
         {
             isGrounded = true;
@@ -64,7 +64,7 @@ public class PlayerMovement : MonoBehaviour
     }
     private void HitByPlatform()
     {
-        PlayerFollow.instance.NoParent();
+        GameplayController.instance.GameOver();
         boxCollider.enabled = false;
         rb.velocity = Vector3.up * hitForce;
     }
